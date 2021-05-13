@@ -27,12 +27,12 @@ class FriendShipViewSet(viewsets.GenericViewSet):
         )
 
     @action(methods=['GET'], detail=True, permission_classes=[AllowAny])
-    def following(self, request, pk):
+    def followings(self, request, pk):
         friendships = Friendship.objects.filter(from_user_id=pk).order_by('-created_at')
         serializer = FollowingSerializer(friendships, many=True)
         return Response(
             {
-                'following': serializer.data,
+                'followings': serializer.data,
             },
             status=status.HTTP_200_OK,
         )
@@ -66,7 +66,7 @@ class FriendShipViewSet(viewsets.GenericViewSet):
             {
                 'success': True,
             },
-            status=status.HTTP_200_OK,
+            status=status.HTTP_201_CREATED,
         )
 
     @action(methods=['POST'], detail=True, permission_classes=[IsAuthenticated])
@@ -88,7 +88,7 @@ class FriendShipViewSet(viewsets.GenericViewSet):
         return Response(
             {
                 'unfollow success': True,
-                'delete': deleted,
+                'deleted': deleted,
             }
         )
 
